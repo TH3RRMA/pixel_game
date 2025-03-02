@@ -1,5 +1,8 @@
 import pytmx
 import pygame
+import time  # Import time module for tracking
+
+last_collision_print_time = 0 # Stores the last time we printed collisions
 
 
 class Map:
@@ -8,12 +11,16 @@ class Map:
         self.tmx_data = None  # Speichert die Map-Daten
         self.tile_size = 0  # Placeholder, will be set after loading map
         self.scale_factor = 3
+        self.map_pixel_width = 0
+        self.map_pixel_height = 0
 
     def load_map(self, filename):
         self.tmx_data = pytmx.load_pygame(filename, pixelalpha=True)
 
         # Set tile size AFTER loading the TMX file
         self.tile_size = self.tmx_data.tilewidth
+        self.map_pixel_width = self.tmx_data.width * self.tile_size * self.scale_factor
+        self.map_pixel_height = self.tmx_data.height * self.tile_size * self.scale_factor
         print(f"Loaded Map: {filename}, Tile Size: {self.tile_size}, Scale Factor: {self.scale_factor}")  # Debug
 
         return self.tmx_data
@@ -41,8 +48,24 @@ class Map:
 
                         screen.blit(scaled_tile, (screen_x, screen_y))
 
+            # Debug: Draw Collision Boxes
+            for rect in self.get_collision_objects():
+                adjusted_rect = pygame.Rect(rect.x - camera_x, rect.y - camera_y, rect.width, rect.height)
+                pygame.draw.rect(screen, (255, 0, 0), adjusted_rect, 2)  # Red for collidable objects
+
+            for rect in self.get_interactive_objects():
+                adjusted_rect = pygame.Rect(rect.x - camera_x, rect.y - camera_y, rect.width, rect.height)
+                pygame.draw.rect(screen, (0, 255, 0), adjusted_rect, 2)  # Green for interactive objects
+
+            for rect, _ in self.get_exits():
+                adjusted_rect = pygame.Rect(rect.x - camera_x, rect.y - camera_y, rect.width, rect.height)
+                pygame.draw.rect(screen, (0, 0, 255), adjusted_rect, 2)  # Blue for exits
+
     def get_collision_objects(self):
+        global last_collision_print_time
+
         collision_objects = []
+        current_time = time.time()
 
         for obj in self.tmx_data.objects:
             if obj.properties.get("collidable"):  # Prüfe die Eigenschaft
@@ -53,6 +76,13 @@ class Map:
 
                 rect = pygame.Rect(scaled_x, scaled_y, scaled_width, scaled_height)
                 collision_objects.append(rect)
+
+        # ✅ Debugging
+        if current_time - last_collision_print_time > 5:
+            print("📌 Collision Objects:")
+            for rect in collision_objects:
+                print(f"   {rect}")
+            last_collision_print_time = current_time
 
         return collision_objects
 
