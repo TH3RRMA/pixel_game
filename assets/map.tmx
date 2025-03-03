@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="39">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="40">
  <tileset firstgid="1" source="Room_Builder_free_16x16.tsx"/>
  <tileset firstgid="392" source="Interiors_free_16x16.tsx"/>
  <layer id="1" name="Kachelebene 1" width="14" height="10">
@@ -50,12 +50,12 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="23" name="Wand" x="4.16667" y="26.1666" width="10.6667" height="117.167">
+  <object id="23" name="Wand" x="8.5" y="26.1666" width="6.33337" height="117.167">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="24" name="Wand" x="207.5" y="23.6667" width="10.6667" height="121">
+  <object id="24" name="Wand" x="207.5" y="23.6667" width="5.6667" height="119">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -75,12 +75,12 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="33" name="Wand" x="4.16667" y="20.6667" width="214.167" height="6">
+  <object id="33" name="Wand" x="17.5" y="19" width="188.167" height="6">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="38" name="Wand" x="128.167" y="138.667" width="81" height="6">
+  <object id="38" name="Wand" x="128.167" y="138.667" width="77.3333" height="6">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -93,6 +93,11 @@
   <object id="37" name="door" x="97.3334" y="150.5" width="29.1667" height="8.33333">
    <properties>
     <property name="target_map" value="big_map.tmx"/>
+   </properties>
+  </object>
+  <object id="39" x="100.333" y="23.6667" width="24.3333" height="17">
+   <properties>
+    <property name="interact" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

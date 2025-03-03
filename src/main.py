@@ -1,6 +1,6 @@
 import sys
 import pygame
-from game_objects import GameObject, Oven, Well, Mill
+# from game_objects_old import GameObject, Oven, Well, Mill
 from player import Player, Camera
 from inventory import Inventory
 from map import Map
@@ -31,17 +31,17 @@ inventory.add_item("Wheat", 5)
 inventory.add_item("Flour", 5)
 
 # Create Objects
-oven = Oven(200, 200, 50, 50)
-well = Well(400, 200, 50, 50)
-mill = Mill(600, 200, 50, 50)
-stone = GameObject(0, 0, 50, 50, solid=True)
+# oven = Oven(200, 200, 50, 50)
+# well = Well(400, 200, 50, 50)
+# mill = Mill(600, 200, 50, 50)
+# stone = GameObject(0, 0, 50, 50, solid=True)
 
 # Initialize camera
 camera = Camera(WIDTH, HEIGHT)
 camera.set_map_size(tilemap.map_pixel_width, tilemap.map_pixel_height)
 
 # Define Game Objects List
-game_objects = [oven, well, stone, mill]
+# game_objects = [oven, well, stone, mill]
 
 # Interaction Handling
 interaction_text = None
@@ -62,10 +62,10 @@ def handle_events():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e and not key_cooldown:
                 # Check interaction
-                for obj in [well, oven, mill]:
-                    if player.rect.colliderect(obj.interaction_zone):
-                        obj.interact(player.rect, event)
-                        interacting_object = obj
+                # for obj in [well, oven, mill]:
+                #     if player.rect.colliderect(obj.interaction_zone):
+                #         obj.interact(player.rect, event)
+                #         interacting_object = obj
                 key_cooldown = True  # Start cooldown after pressing 'E'
 
         if event.type == pygame.KEYUP:
@@ -77,11 +77,11 @@ def handle_events():
             inventory.handle_mouse_click(screen, pygame.mouse.get_pos(), True)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            if oven.interface_open:
-                if player.inventory.dragging_item and oven.handle_item_drop(pygame.mouse.get_pos(), player.inventory.dragging_item):
-                    player.inventory.dragging_item = None  # Clear dragging item
-            else:
-                inventory.handle_mouse_release(pygame.mouse.get_pos())
+            # if oven.interface_open:
+            #     if player.inventory.dragging_item and oven.handle_item_drop(pygame.mouse.get_pos(), player.inventory.dragging_item):
+            #         player.inventory.dragging_item = None  # Clear dragging item
+            # else:
+            inventory.handle_mouse_release(pygame.mouse.get_pos())
 
 def update_game():
     """Updates game logic including player movement, interactions, and camera"""
@@ -104,9 +104,9 @@ def update_game():
             break  # Stop checking other exits
 
     # Movement Handling
-    interface_active = any(obj.interface_open for obj in game_objects)
-    if not interface_active:
-        player.move(keys, collision_rects, dt)
+    # interface_active = any(obj.interface_open for obj in game_objects)
+    # if not interface_active:
+    player.move(keys, collision_rects, dt)
 
     # Camera Update
     camera.update(player)
@@ -121,10 +121,10 @@ def draw_game():
     player.draw(screen, camera)
 
     # Draw all game objects
-    for obj in game_objects:
-        adjusted_rect = camera.apply(obj.rect)
-        obj.draw(screen, adjusted_rect)
-        obj.show_interaction_hint(screen, player.rect, small_font, adjusted_rect)
+    # for obj in game_objects:
+    #     adjusted_rect = camera.apply(obj.rect)
+    #     obj.draw(screen, adjusted_rect)
+    #     obj.show_interaction_hint(screen, player.rect, small_font, adjusted_rect)
 
     # Draw inventory
     inventory.draw(screen, small_font)

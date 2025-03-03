@@ -69,7 +69,7 @@ class Map:
         for obj in self.tmx_data.objects:
             if obj.properties.get("collidable"):  # Prüfe die Eigenschaft
                 scaled_x = obj.x * self.scale_factor
-                scaled_y = obj.y * self.scale_factor
+                scaled_y = (obj.y + self.tile_size / 2) * self.scale_factor
                 scaled_width = obj.width * self.scale_factor
                 scaled_height = obj.height * self.scale_factor
 
