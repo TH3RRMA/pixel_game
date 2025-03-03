@@ -39,7 +39,6 @@ stone = GameObject(0, 0, 50, 50, solid=True)
 # Initialize camera
 camera = Camera(WIDTH, HEIGHT)
 camera.set_map_size(tilemap.map_pixel_width, tilemap.map_pixel_height)
-print(camera.fixed_camera)
 
 # Define Game Objects List
 game_objects = [oven, well, stone, mill]
@@ -116,7 +115,7 @@ def draw_game():
     """Handles all drawing operations"""
     screen.fill(WHITE)
     camera_x, camera_y = camera.offset_x, camera.offset_y
-    tilemap.draw_map(screen, camera_x, camera_y)
+    tilemap.draw_map(screen, camera_x, camera_y, camera)
 
     # Draw Player
     player.draw(screen, camera)

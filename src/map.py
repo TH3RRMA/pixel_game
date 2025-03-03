@@ -21,14 +21,13 @@ class Map:
         self.tile_size = self.tmx_data.tilewidth
         self.map_pixel_width = self.tmx_data.width * self.tile_size * self.scale_factor
         self.map_pixel_height = self.tmx_data.height * self.tile_size * self.scale_factor
-        print(f"Loaded Map: {filename}, Tile Size: {self.tile_size}, Scale Factor: {self.scale_factor}")  # Debug
+        print(f"🗺️ Map Size: {self.map_pixel_width}x{self.map_pixel_height}, Loaded Map: {filename}, Tile Size: {self.tile_size}")  # Debug
 
         return self.tmx_data
 
-    def draw_map(self, screen, camera_x, camera_y):  # self und gespeicherte Map-Daten nutzen
+    def draw_map(self, screen, camera_x, camera_y, camera):  # self und gespeicherte Map-Daten nutzen
         if self.tmx_data is None:
             return  # Falls keine Map geladen wurde, nichts zeichnen
-
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:

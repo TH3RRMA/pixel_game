@@ -105,8 +105,8 @@ class Player:
             screen_y = round(self.pos_y) - camera.offset_y
         else:
             # ✅ If map is large, keep player centered on screen
-            screen_x = screen.get_width() // 2 - current_sprite.get_width() // 2
-            screen_y = screen.get_height() // 2 - current_sprite.get_height() // 2
+            screen_x = round(self.pos_x) - camera.offset_x  # screen.get_width() // 2 - current_sprite.get_width() // 2
+            screen_y = round(self.pos_y) - camera.offset_y  # screen.get_height() // 2 - current_sprite.get_height() // 2
 
         screen.blit(current_sprite, (screen_x, screen_y))
 
@@ -159,9 +159,10 @@ class Camera:
         - Keeps the player centered if the map is large.
         - Allows free movement if the map is small.
         """
+        print(f"📌 Player: ({player.pos_x}, {player.pos_y}) | Camera Offset: ({self.offset_x}, {self.offset_y})")
         if not self.fixed_camera:
-            target_x = player.pos_x - (self.width*3) // 2
-            target_y = player.pos_y - (self.height*3) // 2
+            target_x = player.pos_x - self.width // 2
+            target_y = player.pos_y - self.height // 2
             self.offset_x = max(0, min(target_x, self.map_width - self.width))
             self.offset_y = max(0, min(target_y, self.map_height - self.height))
 
