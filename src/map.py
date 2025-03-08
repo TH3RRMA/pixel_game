@@ -13,6 +13,7 @@ class Map:
         self.scale_factor = 3
         self.map_pixel_width = 0
         self.map_pixel_height = 0
+        self.is_ui = False
 
     def load_map(self, filename):
         self.tmx_data = pytmx.load_pygame(filename, pixelalpha=True)
@@ -21,8 +22,12 @@ class Map:
         self.tile_size = self.tmx_data.tilewidth
         self.map_pixel_width = self.tmx_data.width * self.tile_size * self.scale_factor
         self.map_pixel_height = self.tmx_data.height * self.tile_size * self.scale_factor
-        print(f"🗺️ Map Size: {self.map_pixel_width}x{self.map_pixel_height}, Loaded Map: {filename}, Tile Size: {self.tile_size}")  # Debug
 
+        # ✅ Detect if this is a UI map
+        self.is_ui = "_ui" in filename.lower()
+
+        print(
+            f"🗺️ Map Size: {self.map_pixel_width}x{self.map_pixel_height}, Loaded Map: {filename}, Tile Size: {self.tile_size}, | UI Mode: {self.is_ui}")  # Debug
         return self.tmx_data
 
     def draw_map(self, screen, camera_x, camera_y, camera):  # self und gespeicherte Map-Daten nutzen
@@ -89,7 +94,7 @@ class Map:
         interactive_objects = []
 
         for obj in self.tmx_data.objects:
-            if obj.properties.get("interact"):  # Prüfe die Eigenschaft
+            if obj.properties.get("interact"):  # Check if it's interactive
                 scaled_x = obj.x * self.scale_factor
                 scaled_y = obj.y * self.scale_factor
                 scaled_width = obj.width * self.scale_factor
@@ -111,5 +116,16 @@ class Map:
                 exits.append((rect, obj.properties["target_map"]))  # Store the exit rect + target map name
 
         return exits
+
+    def draw_ui_layer(self, screen):
+        """Draws only UI elements from Tiled on top of the game world"""
+        for layer in self.tmx_data.visible_layers:
+            if "UI" in layer.name:  # ✅ Only render UI layers
+                for x, y, gid in layer:
+                    tile = self.tmx_data.get_tile_image_by_gid(gid)
+                    if tile:
+                        screen.blit(tile, (x * self.tile_size * self.scale_factor,
+                                           y * self.tile_size * self.scale_factor))
+
 
 

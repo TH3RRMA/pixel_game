@@ -10,39 +10,61 @@ class Inventory:
         self.dragging_item = None  # Currently dragged item
         self.dragging_offset = (0, 0)  # Offset of mouse relative to the dragged item
         self.slots = []  # Positions of inventory slots
-        self.slot_width = 60
-        self.slot_height = 60
-        self.padding = 10
+        self.slot_width = 32 * 4
+        self.slot_height = 32 * 4
+        self.padding = 5
+
+        # ✅ Load inventory slot image
+        self.slot_image = pygame.image.load("../assets/ui/inventory_slot.png").convert_alpha()
+        self.slot_image = pygame.transform.scale(self.slot_image, (self.slot_width, self.slot_height))
+
+        # ✅ Load item images (ensure PNGs exist in assets)
+        self.item_images = {
+            "Wheat": pygame.image.load("../assets/items/wheat.png").convert_alpha(),
+            "Flour": pygame.image.load("../assets/items/flour.png").convert_alpha(),
+            # Add more items as needed
+        }
+
+        # ✅ Scale item images to fit inside inventory slots
+        self.item_images = {name: pygame.transform.scale(img, (48, 48)) for name, img in self.item_images.items()}
 
     def draw(self, screen, font):
         """
         Draws the inventory slots and items on the screen.
         """
-        start_x = (screen.get_width() - (self.slot_width + self.padding) * self.max_items) // 2
+        total_width = (self.slot_width * self.max_items) + (self.padding * (self.max_items - 1)) - 320
+        start_x = (screen.get_width() - total_width) // 2  # Centered inventory
         y = screen.get_height() - self.slot_height - 20  # Bottom of the screen
 
         for i in range(self.max_items):
             # Slot background
-            x = start_x + i * (self.slot_width + self.padding)
-            color = (200, 200, 200) if i != self.selected_index else (255, 255, 0)
-            pygame.draw.rect(screen, color, (x, y, self.slot_width, self.slot_height))
+            x = start_x + i * (self.slot_width * (2/3) + self.padding)
 
-            # Draw item if it exists
+            # ✅ Draw PNG slot image
+            screen.blit(self.slot_image, (x, y))
+
+            # ✅ Draw item if it exists
             if i < len(self.items):
-                if self.items[i] is None:
-                    continue
-                # Render item name and count
-                item_name = font.render(self.items[i]["name"], True, (0, 0, 0))
-                item_count = font.render(f"x{self.items[i]['count']}", True, (0, 0, 0))
-                screen.blit(item_name, (x + 5, y + 5))
-                screen.blit(item_count, (x + 5, y + 25))
+                item = self.items[i]
+                if item and item["name"] in self.item_images:  # Ensure item exists in loaded images
+                    item_x = x + (self.slot_width - 48) // 2  # Center item inside slot
+                    item_y = y + (self.slot_height - 48) // 2
+                    screen.blit(self.item_images[item["name"]], (item_x, item_y))
+
+                    # ✅ Draw item count
+                    item_count = font.render(f"x{item['count']}", True, (0, 0, 0))
+                    screen.blit(item_count, (x + 61, y + 70))  # Adjusted position
 
         # Draw dragged item
         if self.dragging_item:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            dragged_text = font.render(f"{self.dragging_item['name']} x{self.dragging_item['count']}", True,
-                                       (255, 0, 0))
-            screen.blit(dragged_text, (mouse_x - self.dragging_offset[0], mouse_y - self.dragging_offset[1]))
+            item_image = self.item_images[self.dragging_item["name"]]
+            screen.blit(item_image, (mouse_x - item_image.get_width() // 2, mouse_y - item_image.get_height() // 2))
+
+            # ✅ Draw the quantity slightly below the item
+            item_count = font.render(f"x{self.dragging_item['count']}", True, (0, 0, 0))  # White text
+            screen.blit(item_count, (mouse_x + 10, mouse_y + 10))  # Position it near the dragged item
+
 
     def add_item(self, name, count):
         """
@@ -71,11 +93,12 @@ class Inventory:
         """
         Returns the inventory slot index where the mouse is released, or None if outside slots.
         """
-        start_x = (pygame.display.get_surface().get_width() - (self.slot_width + self.padding) * self.max_items) // 2
+        total_width = (self.slot_width * self.max_items) + (self.padding * (self.max_items - 1)) - 320
+        start_x = (pygame.display.get_surface().get_width() - total_width) // 2
         y = pygame.display.get_surface().get_height() - self.slot_height - 20
 
         for i in range(self.max_items):
-            x = start_x + i * (self.slot_width + self.padding)
+            x = start_x + i * (self.slot_width * (2/3) + self.padding)
             slot_rect = pygame.Rect(x, y, self.slot_width, self.slot_height)
 
             if slot_rect.collidepoint(mouse_pos):
@@ -86,23 +109,22 @@ class Inventory:
         """
         Handles mouse clicks to select an inventory slot.
         """
-        start_x = (screen.get_width() - (self.slot_width + self.padding) * self.max_items) // 2
-        y = screen.get_height() - self.slot_height - 20  # Bottom of the screen
+        total_width = (self.slot_width * self.max_items) + (self.padding * (self.max_items - 1)) - 320
+        start_x = (screen.get_width() - total_width) // 2
+        y = screen.get_height() - self.slot_height - 20
 
         for i, item in enumerate(self.items):  # Iterate over items with index
             if item is None:
                 continue
 
-            x = start_x + i * (self.slot_width + self.padding)
+            x = start_x + i * (self.slot_width * (2 / 3) + self.padding)
             slot_rect = pygame.Rect(x, y, self.slot_width, self.slot_height)
 
-            if slot_rect.collidepoint(mouse_pos) and mouse_pressed:  # Click and hold
-                self.selected_index = i
-                if not self.dragging_item:  # Prevent reassigning while dragging
-                    self.dragging_item = {"name": item["name"], "count": item["count"]}
-                    self.dragging_offset = (mouse_pos[0] - slot_rect.x, mouse_pos[1] - slot_rect.y)
-                    item["count"] -= item["count"]
-                    self.items[i] = None
+            if slot_rect.collidepoint(mouse_pos) and mouse_pressed:
+                if self.items[i]:  # Only allow dragging if there is an item
+                    self.dragging_item = self.items[i]
+                    self.selected_index = i
+                    self.items[i] = None  # Remove item from inventory during drag
                     print(f"Dragging {self.dragging_item}")
                 return
 

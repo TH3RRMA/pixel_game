@@ -30,30 +30,34 @@ inventory = Inventory()
 inventory.add_item("Wheat", 5)
 inventory.add_item("Flour", 5)
 
-# Create Objects
-# oven = Oven(200, 200, 50, 50)
-# well = Well(400, 200, 50, 50)
-# mill = Mill(600, 200, 50, 50)
-# stone = GameObject(0, 0, 50, 50, solid=True)
-
 # Initialize camera
 camera = Camera(WIDTH, HEIGHT)
 camera.set_map_size(tilemap.map_pixel_width, tilemap.map_pixel_height)
-
-# Define Game Objects List
-# game_objects = [oven, well, stone, mill]
 
 # Interaction Handling
 interaction_text = None
 interaction_timer = 0
 key_cooldown = False
+key_cooldown_timer = 0
 interacting_object = None
+global ui_open  # ✅ Track if UI is open
+ui_open = False  # ✅ Start with UI closed
+
+# Load UI Images
+ui_storage_original = pygame.image.load("../assets/ui/storage_ui.png").convert_alpha()
+
+# Scale it dynamically using the game's scale factor
+UI_SCALE_FACTOR = 3  # Adjust this to match your game scaling
+ui_storage = pygame.transform.scale(
+    ui_storage_original,
+    (ui_storage_original.get_width() * UI_SCALE_FACTOR, ui_storage_original.get_height() * UI_SCALE_FACTOR)
+)
+
 
 # Helper Functions
-
 def handle_events():
     """Handles all user input events"""
-    global running, game_state, key_cooldown, interacting_object
+    global running, key_cooldown
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -61,27 +65,19 @@ def handle_events():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e and not key_cooldown:
-                # Check interaction
-                # for obj in [well, oven, mill]:
-                #     if player.rect.colliderect(obj.interaction_zone):
-                #         obj.interact(player.rect, event)
-                #         interacting_object = obj
-                key_cooldown = True  # Start cooldown after pressing 'E'
+                key_cooldown = True  # ✅ Set cooldown when key is pressed
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_e:
-                key_cooldown = False
+                key_cooldown = False  # ✅ Reset cooldown when key is released
 
         # Handle mouse clicks (inventory or interactions)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             inventory.handle_mouse_click(screen, pygame.mouse.get_pos(), True)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            # if oven.interface_open:
-            #     if player.inventory.dragging_item and oven.handle_item_drop(pygame.mouse.get_pos(), player.inventory.dragging_item):
-            #         player.inventory.dragging_item = None  # Clear dragging item
-            # else:
             inventory.handle_mouse_release(pygame.mouse.get_pos())
+
 
 def update_game():
     """Updates game logic including player movement, interactions, and camera"""
@@ -91,6 +87,16 @@ def update_game():
     collision_rects = tilemap.get_collision_objects()
     interactive_rects = tilemap.get_interactive_objects()
     exits = tilemap.get_exits()
+
+    global key_cooldown_timer, ui_open  # ✅ Track if UI is open
+
+    # ✅ Reduce cooldown timer
+    if key_cooldown_timer > 0:
+        key_cooldown_timer -= 1  # Decrease every frame
+
+    # ✅ Handle UI toggling
+    if handle_ui(keys, interactive_rects):
+        return  # Stop execution if UI is active
 
     # Check player interactions
     for rect, target_map in exits:
@@ -103,42 +109,73 @@ def update_game():
             player.pos_x, player.pos_y = 100, 100
             break  # Stop checking other exits
 
-    # Movement Handling
-    # interface_active = any(obj.interface_open for obj in game_objects)
-    # if not interface_active:
-    player.move(keys, collision_rects, dt)
+    # ✅ Disable player movement if UI is open
+    if not ui_open:
+        player.move(keys, collision_rects, dt)
+        camera.update(player)
 
-    # Camera Update
-    camera.update(player)
+
+def handle_ui(keys, interactive_rects):
+    """Handles UI interactions (opening/closing storage)"""
+
+    global ui_open, key_cooldown_timer
+
+    # ✅ Close UI when 'E' is pressed
+    if ui_open and keys[pygame.K_e] and key_cooldown_timer <= 0:
+        print("🔙 Closing UI, returning to game world...")
+        ui_open = False
+        key_cooldown_timer = 30  # Set cooldown
+        return True  # UI action handled, stop execution
+
+    # ✅ Open UI when interacting with storage
+    for rect in interactive_rects:
+        if player.rect.colliderect(rect) and keys[pygame.K_e] and key_cooldown_timer <= 0:
+            print("📦 Opening storage UI...")
+            ui_open = True
+            key_cooldown_timer = 30  # Set cooldown
+            return True  # UI action handled, stop execution
+
+    return False  # No UI actions performed
+
 
 def draw_game():
     """Handles all drawing operations"""
     screen.fill(WHITE)
+
+    # ✅ Always draw the game world in the background
     camera_x, camera_y = camera.offset_x, camera.offset_y
     tilemap.draw_map(screen, camera_x, camera_y, camera)
-
-    # Draw Player
     player.draw(screen, camera)
 
-    # Draw all game objects
-    # for obj in game_objects:
-    #     adjusted_rect = camera.apply(obj.rect)
-    #     obj.draw(screen, adjusted_rect)
-    #     obj.show_interaction_hint(screen, player.rect, small_font, adjusted_rect)
+    # ✅ Draw UI on top if active (ignore camera movement)
+    if ui_open:
+        draw_ui_overlay(screen)  # Function to draw UI with PNGs
 
-    # Draw inventory
+    # ✅ Always draw inventory (even in UI mode)
     inventory.draw(screen, small_font)
-
-    # Draw interactive areas (Debugging)
-    for rect in tilemap.get_interactive_objects():
-        adjusted_rect = pygame.Rect(rect.x - camera.offset_x, rect.y - camera.offset_y, rect.width, rect.height)
-        pygame.draw.rect(screen, (0, 255, 0), adjusted_rect, 2)
-
     pygame.display.flip()
+
+
+def draw_ui_overlay(screen):
+    """Draws the UI using images instead of rectangles."""
+
+    # UI Background (Storage Interface)
+    screen.blit(ui_storage, (WIDTH // 2 - ui_storage.get_width() // 2, HEIGHT // 2 - ui_storage.get_height() // 2))  # Position the UI background
+
+    # # Close Button
+    # screen.blit(button_close, (600, 120))  # Adjust position as needed
+    #
+    # # Inventory Slots (Example)
+    # for i in range(3):  # Example: 3 slots
+    #     slot_x = 150 + (i * 100)  # Space out slots
+    #     slot_y = 250
+    #     screen.blit(slot_image, (slot_x, slot_y))  # Draw slot image
+
 
 # Main Game Loop
 running = True
 while running:
+    print(key_cooldown)
     handle_events()
     update_game()
     draw_game()

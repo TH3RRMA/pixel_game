@@ -3,18 +3,21 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "interface.tmx",
+    "activeFile": "storage_ui.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
         "Interiors_free_16x16.tsx": {
             "scaleInDock": 1.5,
             "scaleInEditor": 1.5
         },
         "Modern_Exteriors_Complete_Tileset.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "Modern_UI_Style_1.tsx": {
@@ -22,7 +25,7 @@
             "scaleInEditor": 1
         },
         "Modern_UI_Style_2.tsx": {
-            "scaleInDock": 2,
+            "scaleInDock": 0.75,
             "scaleInEditor": 1
         },
         "Room_Builder_free_16x16.tsx": {
@@ -33,31 +36,47 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 4,
+            "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 408.125,
-                "y": 160.125
+                "x": 174,
+                "y": 141.5
             }
         },
         "interface.tmx": {
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 112.75,
-                "y": 125.25
+                "x": 23,
+                "y": 87
+            }
+        },
+        "inventory_slot.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 101,
+                "y": -0.5
             }
         },
         "map.tmx": {
             "expandedObjectLayers": [
-                7,
-                6
+                6,
+                7
             ],
             "scale": 3,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 78.83333333333331,
-                "y": 80.49999999999999
+                "x": 120.66666666666664,
+                "y": 80.33333333333331
+            }
+        },
+        "storage_ui.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 83.99999999999999,
+                "y": 109.16666666666669
             }
         },
         "table.tsx": {
@@ -71,27 +90,27 @@
     "loadedWorlds": [
         "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/my_world.world"
     ],
-    "map.height": 120,
+    "map.height": 12,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 180,
+    "map.width": 18,
     "openFiles": [
         "map.tmx",
         "big_map.tmx",
-        "Modern_Exteriors_Complete_Tileset.tsx",
-        "interface.tmx",
-        "Modern_UI_Style_2.tsx"
+        "storage_ui.tmx"
     ],
     "project": "first_map.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "inventory_slot.tmx",
+        "Modern_UI_Style_1.tsx",
         "map.tmx",
         "big_map.tmx",
-        "Modern_Exteriors_Complete_Tileset.tsx",
-        "Modern_UI_Style_2.tsx",
+        "storage_ui.tmx",
         "interface.tmx",
-        "Modern_UI_Style_1.tsx",
+        "Modern_UI_Style_2.tsx",
+        "Modern_Exteriors_Complete_Tileset.tsx",
         "table.tsx",
         "Room_Builder_free_16x16.tsx",
         "Interiors_free_16x16.tsx"
