@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="3" height="3" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="Modern_UI_Style_2.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="3" height="3">
+  <data encoding="csv">
+834,835,836,
+883,884,885,
+932,933,934
+</data>
+ </layer>
+</map>

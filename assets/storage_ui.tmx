@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="11" height="5" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" source="Modern_UI_Style_2.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="11" height="5">
+  <data encoding="csv">
+99,100,100,100,100,100,100,100,100,100,101,
+148,149,740,740,149,149,149,149,149,149,150,
+148,740,740,740,740,149,149,149,149,149,150,
+148,740,740,740,740,149,149,149,149,149,150,
+197,198,198,198,198,198,198,198,198,198,199
+</data>
+ </layer>
+ <layer id="2" name="Tile Layer 2" width="11" height="5">
+  <data encoding="csv">
+448,987,987,987,987,987,987,987,987,987,0,
+399,246,247,246,247,246,247,246,247,248,0,
+399,295,296,295,296,295,296,295,296,297,0,
+448,344,345,344,345,344,345,344,345,346,0,
+497,498,498,497,498,448,449,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Tile Layer 3" width="11" height="5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,938,938,248,938,248,938,248,938,938,0,
+0,938,938,297,938,297,938,297,938,938,0,
+0,938,938,346,938,346,938,346,938,938,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
