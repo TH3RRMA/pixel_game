@@ -116,19 +116,6 @@ class Player:
         # Debug: Draw the correctly aligned collision box
         pygame.draw.rect(screen, (255, 0, 0), debug_rect, 1)  # Red box (1px border)
 
-        # Debug: Draw collision box around player
-        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)  # Red box (1px border)
-
-    # def add_item(self, name, count):
-    #     """
-    #     Adds an item to the player's inventory or updates the count if it already exists.
-    #     """
-    #     for item in self.inventory.items:
-    #         if item["name"] == name:
-    #             item["count"] += count
-    #             return
-    #     self.inventory.items.append({"name": name, "count": count})
-
 
 class Camera:
     def __init__(self, width, height):

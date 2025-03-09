@@ -3,6 +3,7 @@ import pygame
 # from game_objects_old import GameObject, Oven, Well, Mill
 from player import Player, Camera
 from inventory import Inventory
+from storage import Storage, StorageManager
 from map import Map
 import os
 
@@ -42,6 +43,8 @@ key_cooldown_timer = 0
 interacting_object = None
 global ui_open  # ✅ Track if UI is open
 ui_open = False  # ✅ Start with UI closed
+storage_manager = StorageManager()
+# storage_manager.add_storage("storage_1", max_slots=4)
 
 # Load UI Images
 ui_storage_original = pygame.image.load("../assets/ui/storage_ui.png").convert_alpha()
@@ -71,12 +74,22 @@ def handle_events():
             if event.key == pygame.K_e:
                 key_cooldown = False  # ✅ Reset cooldown when key is released
 
-        # Handle mouse clicks (inventory or interactions)
+        # ✅ Handle Storage UI
+        if ui_open and current_storage_id:
+            storage = storage_manager.get_storage(current_storage_id)
+            if storage:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    storage.handle_mouse_click(pygame.mouse.get_pos(),
+                                               inventory)  # ✅ Handle dragging from storage
+                if event.type == pygame.MOUSEBUTTONUP:
+                    storage.handle_mouse_release(pygame.mouse.get_pos(), inventory)  # ✅ Drop into inventory
+
+        # ✅ Always allow inventory dragging
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             inventory.handle_mouse_click(screen, pygame.mouse.get_pos(), True)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            inventory.handle_mouse_release(pygame.mouse.get_pos())
+            inventory.handle_mouse_release(pygame.mouse.get_pos())  # ✅ Drop within inventory
 
 
 def update_game():
@@ -118,19 +131,23 @@ def update_game():
 def handle_ui(keys, interactive_rects):
     """Handles UI interactions (opening/closing storage)"""
 
-    global ui_open, key_cooldown_timer
+    global ui_open, key_cooldown_timer, current_storage_id
 
     # ✅ Close UI when 'E' is pressed
     if ui_open and keys[pygame.K_e] and key_cooldown_timer <= 0:
         print("🔙 Closing UI, returning to game world...")
         ui_open = False
+        current_storage_id = None  # ✅ Reset storage tracking
         key_cooldown_timer = 30  # Set cooldown
         return True  # UI action handled, stop execution
 
     # ✅ Open UI when interacting with storage
-    for rect in interactive_rects:
-        if player.rect.colliderect(rect) and keys[pygame.K_e] and key_cooldown_timer <= 0:
+    for obj in interactive_rects:
+        if player.rect.colliderect(obj["rect"]) and keys[pygame.K_e] and key_cooldown_timer <= 0:
+            storage_id = obj["name"]  # ✅ Get storage name from map
             print("📦 Opening storage UI...")
+            storage_manager.add_storage(storage_id, 4)  # ✅ Ensure storage exists
+            current_storage_id = storage_id  # ✅ Set active storage
             ui_open = True
             key_cooldown_timer = 30  # Set cooldown
             return True  # UI action handled, stop execution
@@ -148,8 +165,9 @@ def draw_game():
     player.draw(screen, camera)
 
     # ✅ Draw UI on top if active (ignore camera movement)
-    if ui_open:
-        draw_ui_overlay(screen)  # Function to draw UI with PNGs
+    if ui_open and current_storage_id:
+        # draw_ui_overlay(screen)  # Function to draw UI with PNGs
+        storage_manager.get_storage(current_storage_id).draw(screen, small_font)
 
     # ✅ Always draw inventory (even in UI mode)
     inventory.draw(screen, small_font)
@@ -160,7 +178,7 @@ def draw_ui_overlay(screen):
     """Draws the UI using images instead of rectangles."""
 
     # UI Background (Storage Interface)
-    screen.blit(ui_storage, (WIDTH // 2 - ui_storage.get_width() // 2, HEIGHT // 2 - ui_storage.get_height() // 2))  # Position the UI background
+    # screen.blit(ui_storage, (WIDTH // 2 - ui_storage.get_width() // 2, HEIGHT // 2 - ui_storage.get_height() // 2))  # Position the UI background
 
     # # Close Button
     # screen.blit(button_close, (600, 120))  # Adjust position as needed
@@ -175,7 +193,6 @@ def draw_ui_overlay(screen):
 # Main Game Loop
 running = True
 while running:
-    print(key_cooldown)
     handle_events()
     update_game()
     draw_game()

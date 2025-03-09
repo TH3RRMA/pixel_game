@@ -57,8 +57,8 @@ class Map:
                 adjusted_rect = pygame.Rect(rect.x - camera_x, rect.y - camera_y, rect.width, rect.height)
                 pygame.draw.rect(screen, (255, 0, 0), adjusted_rect, 2)  # Red for collidable objects
 
-            for rect in self.get_interactive_objects():
-                adjusted_rect = pygame.Rect(rect.x - camera_x, rect.y - camera_y, rect.width, rect.height)
+            for obj in self.get_interactive_objects():
+                adjusted_rect = pygame.Rect(obj["rect"].x - camera_x, obj["rect"].y - camera_y, obj["rect"].width, obj["rect"].height)
                 pygame.draw.rect(screen, (0, 255, 0), adjusted_rect, 2)  # Green for interactive objects
 
             for rect, _ in self.get_exits():
@@ -101,7 +101,7 @@ class Map:
                 scaled_height = obj.height * self.scale_factor
 
                 rect = pygame.Rect(scaled_x, scaled_y, scaled_width, scaled_height)
-                interactive_objects.append(rect)
+                interactive_objects.append({"rect": rect, "name": obj.name})
 
         return interactive_objects
 

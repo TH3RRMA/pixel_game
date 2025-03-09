@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "storage_ui.tmx",
+    "activeFile": "Modern_UI_Style_2.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -25,7 +25,7 @@
             "scaleInEditor": 1
         },
         "Modern_UI_Style_2.tsx": {
-            "scaleInDock": 0.75,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "Room_Builder_free_16x16.tsx": {
@@ -39,8 +39,8 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 174,
-                "y": 141.5
+                "x": 408,
+                "y": 159.75
             }
         },
         "interface.tmx": {
@@ -67,16 +67,16 @@
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 120.66666666666664,
-                "y": 80.33333333333331
+                "x": 30.33333333333333,
+                "y": 79.83333333333331
             }
         },
         "storage_ui.tmx": {
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 83.99999999999999,
-                "y": 109.16666666666669
+                "x": 88,
+                "y": 39.833333333333314
             }
         },
         "table.tsx": {
@@ -98,18 +98,19 @@
     "openFiles": [
         "map.tmx",
         "big_map.tmx",
-        "storage_ui.tmx"
+        "storage_ui.tmx",
+        "Modern_UI_Style_2.tsx"
     ],
     "project": "first_map.tiled-project",
-    "property.type": "bool",
+    "property.type": "string",
     "recentFiles": [
-        "inventory_slot.tmx",
-        "Modern_UI_Style_1.tsx",
         "map.tmx",
         "big_map.tmx",
         "storage_ui.tmx",
-        "interface.tmx",
         "Modern_UI_Style_2.tsx",
+        "inventory_slot.tmx",
+        "Modern_UI_Style_1.tsx",
+        "interface.tmx",
         "Modern_Exteriors_Complete_Tileset.tsx",
         "table.tsx",
         "Room_Builder_free_16x16.tsx",

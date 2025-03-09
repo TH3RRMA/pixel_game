@@ -148,17 +148,17 @@ class Inventory:
                     else:
                         # Swap items if different
                         self.items[self.selected_index], self.items[slot_index] = self.items[slot_index], self.dragging_item
-            else:
+            elif target:
                 # 2. Try dropping into target (e.g., oven)
-                if target and target.handle_item_drop(mouse_pos, self.dragging_item):
-                    print("Item successfully dropped into target.")
+                target.handle_mouse_release(mouse_pos, self)
+                print("Item successfully dropped into target.")
+            else:
+                # 3. If drop fails, return the item to ts original slot
+                if self.items[self.selected_index] is None:
+                    self.items[self.selected_index] = self.dragging_item
                 else:
-                    # 3. If drop fails, return the item to ts original slot
-                    if self.items[self.selected_index] is None:
-                        self.items[self.selected_index] = self.dragging_item
-                    else:
-                        self.add_item(self.dragging_item["name"], self.dragging_item["count"])
-                        print("Returned item to inventory.")
+                    self.add_item(self.dragging_item["name"], self.dragging_item["count"])
+                    print("Returned item to inventory.")
             self.dragging_item = None  # Reset dragging item
             self.selected_index = None  # Reset index
 

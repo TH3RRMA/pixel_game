@@ -95,7 +95,7 @@
     <property name="target_map" value="big_map.tmx"/>
    </properties>
   </object>
-  <object id="39" x="100.333" y="23.6667" width="24.3333" height="17">
+  <object id="39" name="closet_1" x="100.333" y="23.6667" width="24.3333" height="17">
    <properties>
     <property name="interact" type="bool" value="true"/>
    </properties>
