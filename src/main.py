@@ -27,6 +27,7 @@ small_font = pygame.font.Font(None, 36)
 
 # Game States and Player Setup
 player = Player(300, 250, 16, 32)
+player_menu_open = False
 inventory = Inventory()
 inventory.add_item("Wheat", 5)
 inventory.add_item("Flour", 5)
@@ -47,14 +48,14 @@ storage_manager = StorageManager()
 # storage_manager.add_storage("storage_1", max_slots=4)
 
 # Load UI Images
-ui_storage_original = pygame.image.load("../assets/ui/storage_ui.png").convert_alpha()
+# ui_storage_original = pygame.image.load("../assets/ui/storage_ui.png").convert_alpha()
 
 # Scale it dynamically using the game's scale factor
-UI_SCALE_FACTOR = 3  # Adjust this to match your game scaling
-ui_storage = pygame.transform.scale(
-    ui_storage_original,
-    (ui_storage_original.get_width() * UI_SCALE_FACTOR, ui_storage_original.get_height() * UI_SCALE_FACTOR)
-)
+# UI_SCALE_FACTOR = 3  # Adjust this to match your game scaling
+# ui_storage = pygame.transform.scale(
+#     ui_storage_original,
+#     (ui_storage_original.get_width() * UI_SCALE_FACTOR, ui_storage_original.get_height() * UI_SCALE_FACTOR)
+# )
 
 
 # Helper Functions
@@ -123,7 +124,7 @@ def update_game():
             break  # Stop checking other exits
 
     # ✅ Disable player movement if UI is open
-    if not ui_open:
+    if not ui_open and not player_menu_open:
         player.move(keys, collision_rects, dt)
         camera.update(player)
 
@@ -131,7 +132,16 @@ def update_game():
 def handle_ui(keys, interactive_rects):
     """Handles UI interactions (opening/closing storage)"""
 
-    global ui_open, key_cooldown_timer, current_storage_id
+    global ui_open, key_cooldown_timer, current_storage_id, player_menu_open
+
+    # Open Player's menu by pressing Tab
+    if keys[pygame.K_TAB]:
+        if player_menu_open:
+            player_menu_open = False
+            print("Close player menu")
+        else:
+            player_menu_open = True
+            print("Opening player menu")
 
     # ✅ Close UI when 'E' is pressed
     if ui_open and keys[pygame.K_e] and key_cooldown_timer <= 0:
@@ -145,8 +155,9 @@ def handle_ui(keys, interactive_rects):
     for obj in interactive_rects:
         if player.rect.colliderect(obj["rect"]) and keys[pygame.K_e] and key_cooldown_timer <= 0:
             storage_id = obj["name"]  # ✅ Get storage name from map
+            storage_slots = obj["slots"]
             print("📦 Opening storage UI...")
-            storage_manager.add_storage(storage_id, 4)  # ✅ Ensure storage exists
+            storage_manager.add_storage(storage_id, storage_slots)  # ✅ Ensure storage exists
             current_storage_id = storage_id  # ✅ Set active storage
             ui_open = True
             key_cooldown_timer = 30  # Set cooldown
@@ -168,6 +179,9 @@ def draw_game():
     if ui_open and current_storage_id:
         # draw_ui_overlay(screen)  # Function to draw UI with PNGs
         storage_manager.get_storage(current_storage_id).draw(screen, small_font)
+
+    if player_menu_open:
+        return
 
     # ✅ Always draw inventory (even in UI mode)
     inventory.draw(screen, small_font)

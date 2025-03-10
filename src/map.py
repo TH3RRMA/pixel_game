@@ -101,7 +101,7 @@ class Map:
                 scaled_height = obj.height * self.scale_factor
 
                 rect = pygame.Rect(scaled_x, scaled_y, scaled_width, scaled_height)
-                interactive_objects.append({"rect": rect, "name": obj.name})
+                interactive_objects.append({"rect": rect, "name": obj.name, "slots": obj.slots})
 
         return interactive_objects
 
