@@ -20,6 +20,9 @@ clock = pygame.time.Clock()
 tilemap = Map()
 tilemap.load_map("../assets/map.tmx")
 
+player_ui_map = Map()
+player_ui_map.load_map("../assets/player_ui.tmx")  # ✅ load this once
+
 # Colors and Font
 WHITE, BLACK, RED = (255, 255, 255), (0, 0, 0), (255, 0, 0)
 font = pygame.font.Font(None, 74)
@@ -48,6 +51,8 @@ storage_manager = StorageManager()
 # storage_manager.add_storage("storage_1", max_slots=4)
 
 # Load UI Images
+skills_image = pygame.image.load("../assets/skills.png").convert_alpha()
+
 # ui_storage_original = pygame.image.load("../assets/ui/storage_ui.png").convert_alpha()
 
 # Scale it dynamically using the game's scale factor
@@ -135,13 +140,14 @@ def handle_ui(keys, interactive_rects):
     global ui_open, key_cooldown_timer, current_storage_id, player_menu_open
 
     # Open Player's menu by pressing Tab
-    if keys[pygame.K_TAB]:
+    if keys[pygame.K_TAB] and key_cooldown_timer <= 0:
         if player_menu_open:
             player_menu_open = False
             print("Close player menu")
         else:
             player_menu_open = True
             print("Opening player menu")
+        key_cooldown_timer = 30
 
     # ✅ Close UI when 'E' is pressed
     if ui_open and keys[pygame.K_e] and key_cooldown_timer <= 0:
@@ -169,6 +175,7 @@ def handle_ui(keys, interactive_rects):
 def draw_game():
     """Handles all drawing operations"""
     screen.fill(WHITE)
+    screen.set_alpha(180)
 
     # ✅ Always draw the game world in the background
     camera_x, camera_y = camera.offset_x, camera.offset_y
@@ -176,32 +183,30 @@ def draw_game():
     player.draw(screen, camera)
 
     # ✅ Draw UI on top if active (ignore camera movement)
-    if ui_open and current_storage_id:aaaaaa
+    if ui_open and current_storage_id:
         # draw_ui_overlay(screen)  # Function to draw UI with PNGs
         storage_manager.get_storage(current_storage_id).draw(screen, small_font)
 
     if player_menu_open:
-        return
+        # Dim background
+        overlay = pygame.Surface((WIDTH, HEIGHT))
+        overlay.set_alpha(180)
+        overlay.fill((0, 0, 0))
+        screen.blit(overlay, (0, 0))
+
+        # Calculate centered position
+        ui_x = (WIDTH - player_ui_map.map_pixel_width) // 2 * (-1)
+        ui_y = (HEIGHT - player_ui_map.map_pixel_height) // 2 * (-1)
+
+        # Draw the UI map centered on screen
+        player_ui_map.draw_map(screen, ui_x, ui_y, None)
+
+        pygame.display.flip()
+        return  # 🛑 Stop here — no inventory or HUD drawn underneath
 
     # ✅ Always draw inventory (even in UI mode)
     inventory.draw(screen, small_font)
     pygame.display.flip()
-
-
-def draw_ui_overlay(screen):
-    """Draws the UI using images instead of rectangles."""
-
-    # UI Background (Storage Interface)
-    # screen.blit(ui_storage, (WIDTH // 2 - ui_storage.get_width() // 2, HEIGHT // 2 - ui_storage.get_height() // 2))  # Position the UI background
-
-    # # Close Button
-    # screen.blit(button_close, (600, 120))  # Adjust position as needed
-    #
-    # # Inventory Slots (Example)
-    # for i in range(3):  # Example: 3 slots
-    #     slot_x = 150 + (i * 100)  # Space out slots
-    #     slot_y = 250
-    #     screen.blit(slot_image, (slot_x, slot_y))  # Draw slot image
 
 
 # Main Game Loop

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "player_ui.tmx",
+    "activeFile": "map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -17,7 +17,7 @@
             "scaleInEditor": 1.5
         },
         "Modern_Exteriors_Complete_Tileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "Modern_UI_Style_1.tsx": {
@@ -25,7 +25,7 @@
             "scaleInEditor": 1
         },
         "Modern_UI_Style_2.tsx": {
-            "scaleInDock": 3,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "Room_Builder_free_16x16.tsx": {
@@ -34,13 +34,14 @@
         },
         "big_map.tmx": {
             "expandedObjectLayers": [
-                4
+                4,
+                5
             ],
-            "scale": 2,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 408.25,
-                "y": 159.75
+                "x": 36.16666666666667,
+                "y": 109.66666666666667
             }
         },
         "buy_button.tmx": {
@@ -69,22 +70,30 @@
         },
         "map.tmx": {
             "expandedObjectLayers": [
-                7,
-                6
+                6,
+                7
             ],
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 112,
-                "y": 95.83333333333331
+                "x": 117.83333333333331,
+                "y": 103
             }
         },
         "player_ui.tmx": {
             "scale": 2,
-            "selectedLayer": 4,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 130.5,
-                "y": 31.25
+                "x": 129.75,
+                "y": 93
+            }
+        },
+        "skills.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 100.25,
+                "y": 44.5
             }
         },
         "storage_ui.tmx": {
@@ -123,32 +132,31 @@
     "loadedWorlds": [
         "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/my_world.world"
     ],
-    "map.height": 8,
+    "map.height": 14,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 7,
+    "map.width": 20,
     "openFiles": [
         "map.tmx",
         "player_ui.tmx",
-        "Modern_UI_Style_2.tsx",
-        "buy_button.tmx"
+        "big_map.tmx"
     ],
     "project": "first_map.tiled-project",
-    "property.type": "int",
+    "property.type": "bool",
     "recentFiles": [
-        "map.tmx",
-        "buy_button.tmx",
-        "Modern_UI_Style_2.tsx",
-        "player_ui.tmx",
-        "tiled/big_map.tmx",
         "big_map.tmx",
+        "player_ui.tmx",
+        "map.tmx",
+        "skills.tmx",
+        "Modern_UI_Style_2.tsx",
+        "buy_button.tmx",
+        "tiled/big_map.tmx",
         "storage_ui.tmx",
         "inventory_slot.tmx",
         "Modern_UI_Style_1.tsx",
         "interface.tmx",
-        "Modern_Exteriors_Complete_Tileset.tsx",
-        "table.tsx"
+        "Modern_Exteriors_Complete_Tileset.tsx"
     ],
     "tileset.lastUsedFilter": "All Files (*)",
     "tileset.lastUsedFormat": "tsx",
