@@ -176,7 +176,7 @@ def draw_game():
     player.draw(screen, camera)
 
     # ✅ Draw UI on top if active (ignore camera movement)
-    if ui_open and current_storage_id:
+    if ui_open and current_storage_id:aaaaaa
         # draw_ui_overlay(screen)  # Function to draw UI with PNGs
         storage_manager.get_storage(current_storage_id).draw(screen, small_font)
 
