@@ -28,11 +28,24 @@ class Player:
 
         # Extract individual frames (assuming 4 directions, 3 frames per direction)
         self.frames = {
-            "right": [self.get_sprite(2, i) for i in range(0, 6)],
-            "up": [self.get_sprite(2, i) for i in range(6, 12)],
-            "left": [self.get_sprite(2, i) for i in range(12, 18)],
-            "down": [self.get_sprite(2, i) for i in range(18, 24)]
+            "right": {
+                "walk": [self.get_sprite(2, i) for i in range(0, 6)],
+                "idle": [self.get_sprite(1, i) for i in range(0, 6)]
+            },
+            "up": {
+                "walk": [self.get_sprite(2, i) for i in range(6, 12)],
+                "idle": [self.get_sprite(1, i) for i in range(6, 12)]
+            },
+            "left": {
+                "walk": [self.get_sprite(2, i) for i in range(12, 18)],
+                "idle": [self.get_sprite(1, i) for i in range(12, 18)]
+            },
+            "down": {
+                "walk": [self.get_sprite(2, i) for i in range(18, 24)],
+                "idle": [self.get_sprite(1, i) for i in range(18, 24)]
+            }
         }
+        self.current_state = "idle"
         self.skill_sheet = pygame.image.load("../assets/skills.png").convert_alpha()
         self.icon_width = 48
         self.icon_height = 16
@@ -102,13 +115,17 @@ class Player:
         if moving:
             self.animation_counter += 1
             if self.animation_counter % 10 == 0:  # Change frame every 10 ticks
-                self.current_frame = (self.current_frame + 1) % len(self.frames[self.current_direction])
+                self.current_frame = (self.current_frame + 1) % len(self.frames[self.current_direction]["walk"])
+            self.current_state = "walk"
         else:
-            self.current_frame = 0  # Reset to idle frame
+            self.animation_counter += 1
+            if self.animation_counter % 10 == 0:  # slower idle animation
+                self.current_frame = (self.current_frame + 1) % len(self.frames[self.current_direction]["idle"])
+            self.current_state = "idle"
 
     def draw(self, screen, camera):
         """ Draws the current sprite on screen. """
-        current_sprite = self.frames[self.current_direction][self.current_frame]
+        current_sprite = self.frames[self.current_direction][self.current_state][self.current_frame]
 
         if camera.fixed_camera:
             # ✅ If map is small, draw player at actual position

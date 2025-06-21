@@ -11,15 +11,14 @@ import os
 pygame.init()
 
 # Screen Setup
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1400, 900
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pixel Art Game")
 clock = pygame.time.Clock()
 
 # Load Map
 tilemap = Map()
-tilemap.load_map("../assets/map.tmx")
-
+tilemap.load_map("../assets/maps/map.tmx")
 player_ui_maps = [
     Map(), Map(), Map(), Map()
 ]
@@ -35,8 +34,8 @@ current_ui_page = 0  # Index of current visible UI page
 
 # Colors and Font
 WHITE, BLACK, RED = (255, 255, 255), (0, 0, 0), (255, 0, 0)
-font = pygame.font.Font("../assets/pixelfont.ttf", 74)
-small_font = pygame.font.Font("../assets/pixelfont.ttf", 36)
+font = pygame.font.Font("../assets/ui/pixelfont.ttf", 74)
+small_font = pygame.font.Font("../assets/ui/pixelfont.ttf", 36)
 
 # Game States and Player Setup
 player = Player(300, 250, 16, 32)
@@ -131,7 +130,7 @@ def update_game():
     for rect, target_map in exits:
         if player.rect.colliderect(rect):  # Player touched an exit
             print(f"Transitioning to {target_map}")
-            tilemap.load_map(f"../assets/{target_map}")  # Load new map
+            tilemap.load_map(f"../assets/maps/{target_map}")  # Load new map
             # ✅ Update camera size dynamically
             camera.set_map_size(tilemap.map_pixel_width, tilemap.map_pixel_height)
             # ✅ Reset player position to start of new map
