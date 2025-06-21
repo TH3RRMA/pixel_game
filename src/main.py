@@ -11,10 +11,13 @@ import os
 pygame.init()
 
 # Screen Setup
-WIDTH, HEIGHT = 1400, 900
+WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pixel Art Game")
 clock = pygame.time.Clock()
+cursor_img = pygame.image.load("../assets/ui/cursor.png").convert_alpha()
+cursor_img = pygame.transform.scale(cursor_img, (32, 32))  # Adjust to desired size
+pygame.mouse.set_visible(False)
 
 # Load Map
 tilemap = Map()
@@ -230,6 +233,8 @@ def draw_game():
 
     # ✅ Always draw inventory (even in UI mode)
     inventory.draw(screen, small_font)
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    screen.blit(cursor_img, (mouse_x, mouse_y))
     pygame.display.flip()
 
 

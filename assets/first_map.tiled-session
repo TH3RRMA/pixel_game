@@ -94,7 +94,7 @@
             "scale": 0.7392769607843137,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 518.0737670949027,
+                "x": 448.4111065064235,
                 "y": 227.2490675507667
             }
         },
@@ -168,10 +168,14 @@
                 "x": 116.99999999999999,
                 "y": 168
             }
+        },
+        "ui/Modern_UI_Style_2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "last.externalTilesetPath": "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/maps",
-    "last.imagePath": "C:/Users/Herrm/Downloads/modernexteriors-win/Modern_Exteriors_16x16",
+    "last.imagePath": "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/ui",
     "last.worldFilePath": "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets",
     "loadedWorlds": [
         "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/my_world.world"
@@ -188,6 +192,7 @@
     "project": "first_map.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "ui/Modern_UI_Style_2.tsx",
         "maps/Modern_Exteriors_Complete_Tileset.tsx",
         "maps/big_map.tmx",
         "big_map.tmx",
@@ -198,8 +203,7 @@
         "map.tmx",
         "player_ui.tmx",
         "skills.tmx",
-        "Modern_UI_Style_2.tsx",
-        "buy_button.tmx"
+        "Modern_UI_Style_2.tsx"
     ],
     "tileset.lastUsedFilter": "All Files (*)",
     "tileset.lastUsedFormat": "tsx",
