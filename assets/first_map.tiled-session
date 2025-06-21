@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map.tmx",
+    "activeFile": "big_map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -25,7 +25,7 @@
             "scaleInEditor": 1
         },
         "Modern_UI_Style_2.tsx": {
-            "scaleInDock": 2,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "Room_Builder_free_16x16.tsx": {
@@ -40,7 +40,7 @@
             "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 36.16666666666667,
+                "x": 11.833333333333329,
                 "y": 109.66666666666667
             }
         },
@@ -76,7 +76,7 @@
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 117.83333333333331,
+                "x": 117.83333333333334,
                 "y": 103
             }
         },
@@ -86,6 +86,22 @@
             "viewCenter": {
                 "x": 129.75,
                 "y": 93
+            }
+        },
+        "player_ui_2.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 85.25,
+                "y": 28.5
+            }
+        },
+        "player_ui_4.tmx": {
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 85.25,
+                "y": 28.5
             }
         },
         "skills.tmx": {
@@ -132,23 +148,24 @@
     "loadedWorlds": [
         "C:/Users/Herrm/PycharmProjects/pixel_art_game/assets/my_world.world"
     ],
-    "map.height": 14,
+    "map.height": 9,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 20,
+    "map.width": 13,
     "openFiles": [
         "map.tmx",
         "player_ui.tmx",
-        "big_map.tmx"
+        "big_map.tmx",
+        "skills.tmx"
     ],
     "project": "first_map.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "big_map.tmx",
         "player_ui.tmx",
-        "map.tmx",
         "skills.tmx",
+        "map.tmx",
+        "big_map.tmx",
         "Modern_UI_Style_2.tsx",
         "buy_button.tmx",
         "tiled/big_map.tmx",

@@ -20,8 +20,17 @@ clock = pygame.time.Clock()
 tilemap = Map()
 tilemap.load_map("../assets/map.tmx")
 
-player_ui_map = Map()
-player_ui_map.load_map("../assets/player_ui.tmx")  # ✅ load this once
+player_ui_maps = [
+    Map(), Map(), Map(), Map()
+]
+
+# Load different UI pages
+player_ui_maps[0].load_map("../assets/player_ui.tmx")
+player_ui_maps[1].load_map("../assets/player_ui_2.tmx")
+player_ui_maps[2].load_map("../assets/player_ui_3.tmx")
+player_ui_maps[3].load_map("../assets/player_ui_4.tmx")
+
+current_ui_page = 0  # Index of current visible UI page
 
 
 # Colors and Font
@@ -138,7 +147,7 @@ def update_game():
 def handle_ui(keys, interactive_rects):
     """Handles UI interactions (opening/closing storage)"""
 
-    global ui_open, key_cooldown_timer, current_storage_id, player_menu_open
+    global ui_open, key_cooldown_timer, current_storage_id, player_menu_open, current_ui_page
 
     # Open Player's menu by pressing Tab
     if keys[pygame.K_TAB] and key_cooldown_timer <= 0:
@@ -148,7 +157,20 @@ def handle_ui(keys, interactive_rects):
         else:
             player_menu_open = True
             print("Opening player menu")
+            current_ui_page = 0  # ✅ Always start on the first page
         key_cooldown_timer = 30
+
+    # Switching menu tabs by pressing q and e
+    if player_menu_open and key_cooldown_timer <= 0:
+        if keys[pygame.K_q]:
+            current_ui_page = (current_ui_page - 1) % len(player_ui_maps)
+            print(f"⬅️ Switched to UI page {current_ui_page + 1}")
+            key_cooldown_timer = 15  # prevent rapid switching
+
+        elif keys[pygame.K_e]:
+            current_ui_page = (current_ui_page + 1) % len(player_ui_maps)
+            print(f"➡️ Switched to UI page {current_ui_page + 1}")
+            key_cooldown_timer = 15
 
     # ✅ Close UI when 'E' is pressed
     if ui_open and keys[pygame.K_e] and key_cooldown_timer <= 0:
@@ -196,12 +218,13 @@ def draw_game():
         screen.blit(overlay, (0, 0))
 
         # Calculate centered position
-        ui_x = (WIDTH - player_ui_map.map_pixel_width) // 2 * (-1)
-        ui_y = (HEIGHT - player_ui_map.map_pixel_height) // 2 * (-1)
+        ui_x = (WIDTH - player_ui_maps[current_ui_page].map_pixel_width) // 2 * (-1)
+        ui_y = (HEIGHT - player_ui_maps[current_ui_page].map_pixel_height) // 2 * (-1)
 
         # Draw the UI map centered on screen
-        player_ui_map.draw_map(screen, ui_x, ui_y, None)
-        player.draw_skill_bar(screen, offset=(ui_x, ui_y), font=small_font)
+        player_ui_maps[current_ui_page].draw_map(screen, ui_x, ui_y, None)
+        if current_ui_page == 0:
+            player.draw_skill_bar(screen, offset=(ui_x, ui_y), font=small_font)
 
         pygame.display.flip()
         return  # 🛑 Stop here — no inventory or HUD drawn underneath
