@@ -23,10 +23,11 @@ tilemap.load_map("../assets/map.tmx")
 player_ui_map = Map()
 player_ui_map.load_map("../assets/player_ui.tmx")  # ✅ load this once
 
+
 # Colors and Font
 WHITE, BLACK, RED = (255, 255, 255), (0, 0, 0), (255, 0, 0)
-font = pygame.font.Font(None, 74)
-small_font = pygame.font.Font(None, 36)
+font = pygame.font.Font("../assets/pixelfont.ttf", 74)
+small_font = pygame.font.Font("../assets/pixelfont.ttf", 36)
 
 # Game States and Player Setup
 player = Player(300, 250, 16, 32)
@@ -200,6 +201,7 @@ def draw_game():
 
         # Draw the UI map centered on screen
         player_ui_map.draw_map(screen, ui_x, ui_y, None)
+        player.draw_skill_bar(screen, offset=(ui_x, ui_y), font=small_font)
 
         pygame.display.flip()
         return  # 🛑 Stop here — no inventory or HUD drawn underneath

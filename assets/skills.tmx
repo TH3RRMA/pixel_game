@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="5" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="Modern_UI_Style_2.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="15" height="5">
+  <data encoding="csv">
+360,409,362,360,411,362,360,458,362,360,460,362,360,361,362,
+507,556,509,507,558,509,507,605,509,507,607,509,507,508,509,
+507,556,509,507,705,509,751,752,509,507,754,509,507,655,509,
+507,556,509,507,852,509,507,899,509,507,901,509,507,802,509,
+507,556,509,507,999,509,507,1046,509,507,1048,509,507,949,509
+</data>
+ </layer>
+</map>

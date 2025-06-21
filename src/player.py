@@ -33,6 +33,17 @@ class Player:
             "left": [self.get_sprite(2, i) for i in range(12, 18)],
             "down": [self.get_sprite(2, i) for i in range(18, 24)]
         }
+        self.skill_sheet = pygame.image.load("../assets/skills.png").convert_alpha()
+        self.icon_width = 48
+        self.icon_height = 16
+        self.skill_ui_pos = (200, 300)  # relative to UI
+        self.skill_level = [
+            {"name": "cooking", "level": 2, "color": 0},
+            {"name": "serving", "level": 1, "color": 1},
+            {"name": "leading", "level": 2, "color": 2},
+            {"name": "dummheit", "level": 4, "color": 3},
+            {"name": "leading", "level": 2, "color": 4}
+        ]
 
     def get_sprite(self, row, col, sprite_height=32, sprite_width=16, scale_factor=3):
         """ Extracts a sprite from the sprite sheet. """
@@ -115,6 +126,28 @@ class Player:
 
         # Debug: Draw the correctly aligned collision box
         pygame.draw.rect(screen, (255, 0, 0), debug_rect, 1)  # Red box (1px border)
+
+    def get_skill_icon(self, col, row):
+        rect = pygame.Rect(col * self.icon_width, row * self.icon_height,
+                           self.icon_width, self.icon_height)
+        return self.skill_sheet.subsurface(rect)
+
+    def draw_skill_bar(self, screen, offset=(0, 0), font=None):
+        x_base, y_base = self.skill_ui_pos[0] + offset[0], self.skill_ui_pos[1] + offset[1]
+        for i, skill in enumerate(self.skill_level):
+            icon = self.get_skill_icon(skill["level"], skill["color"])
+            x = x_base
+            y = y_base + i * (self.icon_height + 30)
+            # 🖼 scale the icon before blitting
+            scaled_icon = pygame.transform.scale(
+                icon,
+                (self.icon_width * 3, self.icon_height * 3)
+            )
+            screen.blit(scaled_icon, (x, y))
+
+            if font:
+                label = font.render(skill["name"], True, (0, 0, 0))  # white text
+                screen.blit(label, (x + self.icon_width * 3 + 15, y + 5))
 
 
 class Camera:
